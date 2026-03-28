@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TON Planner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+
+<!-- TON Planner и Новая задача на одной строке 
+    <div class="header">
+        <h1>🟣 TON Planner</h1>
+        <a href="{{ url_for('add_task') }}" class="add-btn">
+            <i class="fas fa-plus"></i> Новая задача
+        </a>
+    </div>
+-->
+
+
+    <div class="header">
+        <h1>TON Planner</h1>
+        <nav class="nav">
+                <ul class="menu">
+                    <li class="menu__item"><a onclick="page(event, 'tasks')" href="#" class="menu__link menu__link--active">Tasks</a></li>
+                    <li class="menu__item"><a onclick="page(event, 'storage')" href="#" class="menu__link">Storage</a></li>
+                    <li class="menu__item"><a onclick="page(event, 'manage')" href="#" class="menu__link">Manage</a></li>
+                    <li class="menu__item"><a onclick="page(event, 'about')" href="#" class="menu__link">About</a></li>
+                </ul>
+            </nav>
+    </div>
+    
+    <div class="stats-row">
+        <div class="stat-card pending">
+            <div class="stat-value">{{ status_counts.pending }}</div>
+            <div class="stat-label">Ожидают</div>
+        </div>
+        <div class="stat-card in-progress">
+            <div class="stat-value">{{ status_counts.in_progress }}</div>
+            <div class="stat-label">В процессе</div>
+        </div>
+        <div class="stat-card completed">
+            <div class="stat-value">{{ status_counts.completed }}</div>
+            <div class="stat-label">Выполнено</div>
+        </div>
+    </div>
+    <div class="header">
+        <h1></h1>
+        <a href="{{ url_for('add_task') }}" class="add-btn">
+            <i class="fas fa-plus"></i> <!-- Новая задача -->
+        </a>
+    </div>
+    <div class="tasks-list">
+        {% if tasks %}
+            {% for task in tasks %}
+            <div class="task-card {{ task.status }}">
+                <div class="task-main">
+                    <div class="task-title">{{ task.title }}</div>
+                    {% if task.description %}
+                    <div class="task-description">{{ task.description }}</div>
+                    {% endif %}
+                    <div class="task-meta">
+                        <span class="priority-badge {{ task.priority }}">
+                            {% if task.priority == 'high' %}🔴 Высокий
+                            {% elif task.priority == 'medium' %}🟡 Средний
+                            {% else %}🟢 Низкий
+                            {% endif %}
+                        </span>
+                        <span class="status-badge {{ task.status }}">
+                            {% if task.status == 'pending' %}⏳ 
+                            {% elif task.status == 'in_progress' %}⚙️ В процессе
+                            {% else %}✅ 
+                            {% endif %}
+                        </span>
+                        {% if task.due_date %}
+                        <span class="due-date">
+                            <i class="fas fa-calendar"></i> {{ task.due_date }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="task-actions">
+                    {% if task.status != 'completed' %}
+                    <form action="{{ url_for('complete_task', task_id=task.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="action-btn complete">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="{{ url_for('revert_task', task_id=task.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="action-btn revert">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                    <a href="{{ url_for('edit_task', task_id=task.id) }}" class="action-btn">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Удалить задачу?');">
+                        <button type="submit" class="action-btn delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>Пока нет задач</h3>
+                <p>Создайте свою первую задачу!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
