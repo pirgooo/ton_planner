@@ -1,0 +1,200 @@
+# English translations for TON Planner.
+msgid ""
+msgstr ""
+"Project-Id-Version: TON Planner\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Tasks"
+msgstr "Tasks"
+
+msgid "Storage"
+msgstr "Storage"
+
+msgid "Manage"
+msgstr "Manage"
+
+msgid "About"
+msgstr "About"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "All"
+msgstr "All"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Completed"
+msgstr "Completed"
+
+msgid "List"
+msgstr "List"
+
+msgid "Calendar"
+msgstr "Calendar"
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "In progress"
+msgstr "In progress"
+
+msgid "No tasks yet"
+msgstr "No tasks yet"
+
+msgid "Create your first task"
+msgstr "Create your first task"
+
+msgid "Add task"
+msgstr "Add task"
+
+msgid "Edit task"
+msgstr "Edit task"
+
+msgid "Delete task"
+msgstr "Delete task"
+
+msgid "Delete task?"
+msgstr "Delete task?"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Priority"
+msgstr "Priority"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Due date"
+msgstr "Due date"
+
+msgid "Due time"
+msgstr "Due time"
+
+msgid "High"
+msgstr "High"
+
+msgid "Medium"
+msgstr "Medium"
+
+msgid "Low"
+msgstr "Low"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Export PDF"
+msgstr "Export PDF"
+
+msgid "Account"
+msgstr "Account"
+
+msgid "Your wallet address"
+msgstr "Your wallet address"
+
+msgid "Total tasks"
+msgstr "Total tasks"
+
+msgid "Features"
+msgstr "Features"
+
+msgid "Your personal task planner on TON blockchain"
+msgstr "Your personal task planner on TON blockchain"
+
+msgid "Secure authorization via TON wallet"
+msgstr "Secure authorization via TON wallet"
+
+msgid "Task management with priorities"
+msgstr "Task management with priorities"
+
+msgid "Progress tracking"
+msgstr "Progress tracking"
+
+msgid "Personal storage for each user"
+msgstr "Personal storage for each user"
+
+msgid "Login with TON wallet"
+msgstr "Login with TON wallet"
+
+msgid "Enter wallet address"
+msgstr "Enter wallet address"
+
+msgid "Your personal storage"
+msgstr "Your personal storage"
+
+msgid "Coming soon"
+msgstr "Coming soon"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Enter task title"
+msgstr "Enter task title"
+
+msgid "Describe the task in detail..."
+msgstr "Describe the task in detail..."
+
+msgid "Registration date"
+msgstr "Registration date"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Save tasks list to PDF file"
+msgstr "Save tasks list to PDF file"
+
+msgid "Download PDF"
+msgstr "Download PDF"
+
+msgid "Back to main"
+msgstr "Back to main"
+
+msgid "Create tasks with title, description and priority"
+msgstr "Create tasks with title, description and priority"
+
+msgid "Track status: pending, in progress, completed"
+msgstr "Track status: pending, in progress, completed"
+
+msgid "Set due date and time"
+msgstr "Set due date and time"
+
+msgid "Filter tasks by status"
+msgstr "Filter tasks by status"
+
+msgid "Export tasks to PDF"
+msgstr "Export tasks to PDF"
+
+msgid "Mon"
+msgstr "Mon"
+
+msgid "Tue"
+msgstr "Tue"
+
+msgid "Wed"
+msgstr "Wed"
+
+msgid "Thu"
+msgstr "Thu"
+
+msgid "Fri"
+msgstr "Fri"
+
+msgid "Sat"
+msgstr "Sat"
+
+msgid "Sun"
+msgstr "Sun"

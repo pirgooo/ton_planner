@@ -494,6 +494,33 @@ body {
     gap: 10px;
 }
 
+.lang-switch {
+    display: flex;
+    gap: 4px;
+    margin-left: 10px;
+}
+
+.lang-btn {
+    padding: 8px 12px;
+    background: #667eea;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.lang-btn:hover {
+    background: #5a6fd6;
+}
+
+.lang-btn.active {
+    background: #333;
+}
+
 .menu__link-outline {
     display: inline-flex;
     align-items: center;

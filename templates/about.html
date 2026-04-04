@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ session.get('lang', 'ru') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About us</title>
+    <title>{{ _('About') }} - TON Planner</title>
     <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,10 +17,10 @@
         <h1>TON Planner</h1>
         <nav class="nav">
                 <ul class="menu">
-                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link">Tasks</a></li>
-                    <li class="menu__item"><a href="{{ url_for('storage') }}" class="menu__link">Storage</a></li>
-                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link">Manage</a></li>
-                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link menu__link--active">About</a></li>
+                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link">{{ _('Tasks') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('storage') }}" class="menu__link">{{ _('Storage') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link">{{ _('Manage') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link menu__link--active">{{ _('About') }}</a></li>
                 </ul>
             </nav>
         <div class="auth-section">
@@ -35,20 +35,25 @@
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             {% else %}
-                <a href="{{ url_for('login') }}" class="menu__link-outline">Login</a>
+                <a href="{{ url_for('login') }}" class="menu__link-outline">{{ _('Login') }}</a>
             {% endif %}
+            <div class="lang-switch">
+                {% for code, name in LANGUAGES.items() %}
+                    <a href="{{ url_for('set_language', lang=code) }}" class="lang-btn {% if session.get('lang', 'ru') == code %}active{% endif %}">{{ code.upper() }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
     <div class="about-content">
         <div class="about-section">
-            <h3><i class="fas fa-tasks"></i> Функции</h3>
+            <h3><i class="fas fa-tasks"></i> {{ _('Features') }}</h3>
             <ul class="features-list">
-                <li>Создание задач с названием, описанием и приоритетом</li>
-                <li>Отслеживание статуса: ожидает, в процессе, выполнено</li>
-                <li>Установка срока выполнения</li>
-                <li>Фильтрация по статусу задач</li>
-                <li>Экспорт задач в PDF</li>
+                <li>{{ _('Create tasks with title, description and priority') }}</li>
+                <li>{{ _('Track status: pending, in progress, completed') }}</li>
+                <li>{{ _('Set due date and time') }}</li>
+                <li>{{ _('Filter tasks by status') }}</li>
+                <li>{{ _('Export tasks to PDF') }}</li>
             </ul>
         </div>
     </div>

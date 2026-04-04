@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ session.get('lang', 'ru') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - TON Planner</title>
+    <title>{{ _('Login') }} - TON Planner</title>
     <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
@@ -11,16 +11,21 @@
 <body>
 <div class="container">
     <div class="login-form-container">
-        <h1>TON Login</h1>
+        <h1>{{ _('Login with TON wallet') }}</h1>
         <form method="POST" action="{{ url_for('login') }}">
             <div class="form-group">
-                <label for="wallet">Адрес кошелька (TON):</label>
+                <label for="wallet">{{ _('Your wallet address') }} (TON):</label>
                 <input type="text" id="wallet" name="wallet" placeholder="EQ..." required>
             </div>
-            <button type="submit" class="btn btn-primary">Войти</button>
+            <button type="submit" class="btn btn-primary">{{ _('Login') }}</button>
         </form>
-        <p class="login-hint">Введите адрес вашего TON кошелька для входа</p>
-        <a href="{{ url_for('index') }}" class="btn">На главную</a>
+        <p class="login-hint">{{ _('Enter wallet address') }}</p>
+        <a href="{{ url_for('index') }}" class="btn">{{ _('Back to main') }}</a>
+        <div class="lang-switch" style="justify-content: center; margin-top: 20px;">
+            {% for code, name in LANGUAGES.items() %}
+                <a href="{{ url_for('set_language', lang=code) }}" class="lang-btn {% if session.get('lang', 'ru') == code %}active{% endif %}">{{ code.upper() }}</a>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

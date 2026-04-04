@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ session.get('lang', 'ru') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage - TON Planner</title>
+    <title>{{ _('Manage') }} - TON Planner</title>
     <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,10 +17,10 @@
         <h1>TON Planner</h1>
         <nav class="nav">
                 <ul class="menu">
-                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link">Tasks</a></li>
-                    <li class="menu__item"><a href="#" class="menu__link">Storage</a></li>
-                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link menu__link--active">Manage</a></li>
-                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link">About</a></li>
+                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link">{{ _('Tasks') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('storage') }}" class="menu__link">{{ _('Storage') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link menu__link--active">{{ _('Manage') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link">{{ _('About') }}</a></li>
                 </ul>
             </nav>
         <div class="auth-section">
@@ -33,22 +33,27 @@
             <a href="{{ url_for('logout') }}" class="ton-btn disconnect">
                 <i class="fas fa-sign-out-alt"></i>
             </a>
+            <div class="lang-switch">
+                {% for code, name in LANGUAGES.items() %}
+                    <a href="{{ url_for('set_language', lang=code) }}" class="lang-btn {% if session.get('lang', 'ru') == code %}active{% endif %}">{{ code.upper() }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
     <div class="user-info-section">
-        <h2>Данные аккаунта</h2>
+        <h2>{{ _('Account') }}</h2>
         <div class="user-card">
             <div class="user-avatar">
                 <i class="fas fa-user-circle"></i>
             </div>
             <div class="user-details">
                 <div class="user-field">
-                    <span class="field-label">Кошелек:</span>
+                    <span class="field-label">{{ _('Your wallet address') }}:</span>
                     <span class="field-value">{{ current_user.wallet_address }}</span>
                 </div>
                 <div class="user-field">
-                    <span class="field-label">Дата регистрации:</span>
+                    <span class="field-label">{{ _('Registration date') }}:</span>
                     <span class="field-value">{{ current_user.created_at }}</span>
                 </div>
             </div>
@@ -56,17 +61,17 @@
     </div>
 
     <div class="actions-section">
-        <h2>Действия</h2>
+        <h2>{{ _('Actions') }}</h2>
         <div class="action-card">
             <div class="action-info">
                 <i class="fas fa-file-pdf"></i>
                 <div>
-                    <h3>Экспорт в PDF</h3>
-                    <p>Сохраните список задач в PDF файл</p>
+                    <h3>{{ _('Export PDF') }}</h3>
+                    <p>{{ _('Save tasks list to PDF file') }}</p>
                 </div>
             </div>
             <a href="{{ url_for('export_pdf') }}" class="action-btn-export">
-                <i class="fas fa-download"></i> Скачать PDF
+                <i class="fas fa-download"></i> {{ _('Download PDF') }}
             </a>
         </div>
     </div>

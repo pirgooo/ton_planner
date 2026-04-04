@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ session.get('lang', 'ru') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Storage - TON Planner</title>
+    <title>{{ _('Storage') }} - TON Planner</title>
     <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,10 +17,10 @@
         <h1>TON Planner</h1>
         <nav class="nav">
                 <ul class="menu">
-                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link">Tasks</a></li>
-                    <li class="menu__item"><a href="{{ url_for('storage') }}" class="menu__link menu__link--active">Storage</a></li>
-                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link">Manage</a></li>
-                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link">About</a></li>
+                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link">{{ _('Tasks') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('storage') }}" class="menu__link menu__link--active">{{ _('Storage') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link">{{ _('Manage') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link">{{ _('About') }}</a></li>
                 </ul>
             </nav>
         <div class="auth-section">
@@ -33,6 +33,11 @@
             <a href="{{ url_for('logout') }}" class="ton-btn disconnect">
                 <i class="fas fa-sign-out-alt"></i>
             </a>
+            <div class="lang-switch">
+                {% for code, name in LANGUAGES.items() %}
+                    <a href="{{ url_for('set_language', lang=code) }}" class="lang-btn {% if session.get('lang', 'ru') == code %}active{% endif %}">{{ code.upper() }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 

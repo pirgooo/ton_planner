@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ session.get('lang', 'ru') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✏️ Редактирование задачи</title>
+    <title>✏️ {{ _('Edit task') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
@@ -11,59 +11,59 @@
 <body>
 <div class="container">
     <a href="{{ url_for('index') }}" class="filter-btn" style="margin-bottom: 30px;">
-        <i class="fas fa-arrow-left"></i> Назад
+        <i class="fas fa-arrow-left"></i> {{ _('Back') }}
     </a>
 <br><br>
     <div class="form-header">
-        <h1>Редактирование задачи</h1>
+        <h1>{{ _('Edit task') }}</h1>
     </div>
 
     <form method="POST">
         <div class="form-group">
-            <label for="title">Название *</label>
+            <label for="title">{{ _('Title') }} *</label>
             <input type="text" id="title" name="title" required value="{{ task.title }}">
         </div>
 
         <div class="form-group">
-            <label for="description">Описание</label>
+            <label for="description">{{ _('Description') }}</label>
             <textarea id="description" name="description">{{ task.description }}</textarea>
         </div>
 
         <div class="form-row">
             <div class="form-group">
-                <label for="priority">Приоритет</label>
+                <label for="priority">{{ _('Priority') }}</label>
                 <select id="priority" name="priority">
-                    <option value="high" {% if task.priority == 'high' %}selected{% endif %}>🔴 Высокий</option>
-                    <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>🟡 Средний</option>
-                    <option value="low" {% if task.priority == 'low' %}selected{% endif %}>🟢 Низкий</option>
+                    <option value="high" {% if task.priority == 'high' %}selected{% endif %}>🔴 {{ _('High') }}</option>
+                    <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>🟡 {{ _('Medium') }}</option>
+                    <option value="low" {% if task.priority == 'low' %}selected{% endif %}>🟢 {{ _('Low') }}</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="status">Статус</label>
+                <label for="status">{{ _('Status') }}</label>
                 <select id="status" name="status">
-                    <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>⏳ Ожидает</option>
-                    <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>⚙️ В процессе</option>
-                    <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>✅ Выполнено</option>
+                    <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>⏳ {{ _('Pending') }}</option>
+                    <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>⚙️ {{ _('In progress') }}</option>
+                    <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>✅ {{ _('Completed') }}</option>
                 </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="due_date">Срок выполнения</label>
+            <label for="due_date">{{ _('Due date') }}</label>
             <input type="date" id="due_date" name="due_date" value="{{ task.due_date }}">
         </div>
 
         <div class="form-group">
-            <label for="due_time">Время</label>
+            <label for="due_time">{{ _('Due time') }}</label>
             <input type="time" id="due_time" name="due_time" value="{{ task.due_time or '' }}">
         </div>
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Сохранить изменения
+                <i class="fas fa-save"></i> {{ _('Save') }}
             </button>
-            <a href="{{ url_for('index') }}" class="btn btn-secondary">Отмена</a>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
         </div>
     </form>
 </div>

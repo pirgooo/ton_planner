@@ -1,0 +1,200 @@
+# Russian translations for TON Planner.
+msgid ""
+msgstr ""
+"Project-Id-Version: TON Planner\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Tasks"
+msgstr "Задачи"
+
+msgid "Storage"
+msgstr "Хранилище"
+
+msgid "Manage"
+msgstr "Управление"
+
+msgid "About"
+msgstr "О приложении"
+
+msgid "Login"
+msgstr "Войти"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "All"
+msgstr "Все"
+
+msgid "Active"
+msgstr "Активные"
+
+msgid "Completed"
+msgstr "Выполненные"
+
+msgid "List"
+msgstr "Списком"
+
+msgid "Calendar"
+msgstr "Календарь"
+
+msgid "Pending"
+msgstr "Ожидают"
+
+msgid "In progress"
+msgstr "В процессе"
+
+msgid "No tasks yet"
+msgstr "Пока нет задач"
+
+msgid "Create your first task"
+msgstr "Создайте свою первую задачу"
+
+msgid "Add task"
+msgstr "Добавить задачу"
+
+msgid "Edit task"
+msgstr "Редактировать задачу"
+
+msgid "Delete task"
+msgstr "Удалить задачу"
+
+msgid "Delete task?"
+msgstr "Удалить задачу?"
+
+msgid "Title"
+msgstr "Название"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Priority"
+msgstr "Приоритет"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Due date"
+msgstr "Срок"
+
+msgid "Due time"
+msgstr "Время"
+
+msgid "High"
+msgstr "Высокий"
+
+msgid "Medium"
+msgstr "Средний"
+
+msgid "Low"
+msgstr "Низкий"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Export PDF"
+msgstr "Экспорт в PDF"
+
+msgid "Account"
+msgstr "Аккаунт"
+
+msgid "Your wallet address"
+msgstr "Ваш адрес кошелька"
+
+msgid "Total tasks"
+msgstr "Всего задач"
+
+msgid "Features"
+msgstr "Возможности"
+
+msgid "Your personal task planner on TON blockchain"
+msgstr "Ваш персональный планировщик задач на блокчейне TON"
+
+msgid "Secure authorization via TON wallet"
+msgstr "Безопасная авторизация через TON кошелек"
+
+msgid "Task management with priorities"
+msgstr "Управление задачами с приоритетами"
+
+msgid "Progress tracking"
+msgstr "Отслеживание прогресса"
+
+msgid "Personal storage for each user"
+msgstr "Персональное хранилище для каждого пользователя"
+
+msgid "Login with TON wallet"
+msgstr "Вход через TON кошелёк"
+
+msgid "Enter wallet address"
+msgstr "Введите адрес кошелька"
+
+msgid "Your personal storage"
+msgstr "Ваше персональное хранилище"
+
+msgid "Coming soon"
+msgstr "Скоро будет"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Enter task title"
+msgstr "Введите название задачи"
+
+msgid "Describe the task in detail..."
+msgstr "Опишите задачу подробнее..."
+
+msgid "Registration date"
+msgstr "Дата регистрации"
+
+msgid "Actions"
+msgstr "Действия"
+
+msgid "Save tasks list to PDF file"
+msgstr "Сохраните список задач в PDF файл"
+
+msgid "Download PDF"
+msgstr "Скачать PDF"
+
+msgid "Back to main"
+msgstr "На главную"
+
+msgid "Create tasks with title, description and priority"
+msgstr "Создание задач с названием, описанием и приоритетом"
+
+msgid "Track status: pending, in progress, completed"
+msgstr "Отслеживание статуса: ожидает, в процессе, выполнено"
+
+msgid "Set due date and time"
+msgstr "Установка срока выполнения"
+
+msgid "Filter tasks by status"
+msgstr "Фильтрация по статусу задач"
+
+msgid "Export tasks to PDF"
+msgstr "Экспорт задач в PDF"
+
+msgid "Mon"
+msgstr "Пн"
+
+msgid "Tue"
+msgstr "Вт"
+
+msgid "Wed"
+msgstr "Ср"
+
+msgid "Thu"
+msgstr "Чт"
+
+msgid "Fri"
+msgstr "Пт"
+
+msgid "Sat"
+msgstr "Сб"
+
+msgid "Sun"
+msgstr "Вс"

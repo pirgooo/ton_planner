@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ session.get('lang', 'ru') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,12 +17,12 @@
         <h1>TON Planner</h1>
         <nav class="nav">
                 <ul class="menu">
-                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link menu__link--active">Tasks</a></li>
-                    <li class="menu__item"><a href="{{ url_for('storage') }}" class="menu__link">Storage</a></li>
-                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link">Manage</a></li>
-                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link">About</a></li>
+                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link menu__link--active">{{ _('Tasks') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('storage') }}" class="menu__link">{{ _('Storage') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link">{{ _('Manage') }}</a></li>
+                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link">{{ _('About') }}</a></li>
                     {% if not current_user %}
-                    <li class="menu__item"><a href="{{ url_for('login') }}" class="menu__link-outline">Login</a></li>
+                    <li class="menu__item"><a href="{{ url_for('login') }}" class="menu__link-outline">{{ _('Login') }}</a></li>
                     {% endif %}
                 </ul>
             </nav>
@@ -38,6 +38,11 @@
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             {% endif %}
+            <div class="lang-switch">
+                {% for code, name in LANGUAGES.items() %}
+                    <a href="{{ url_for('set_language', lang=code) }}" class="lang-btn {% if session.get('lang', 'ru') == code %}active{% endif %}">{{ code.upper() }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
     
@@ -45,25 +50,25 @@
     <div class="stats-row">
         <div class="stat-card pending">
             <div class="stat-value">{{ status_counts.pending }}</div>
-            <div class="stat-label">Ожидают</div>
+            <div class="stat-label">{{ _('Pending') }}</div>
         </div>
         <div class="stat-card in-progress">
             <div class="stat-value">{{ status_counts.in_progress }}</div>
-            <div class="stat-label">В процессе</div>
+            <div class="stat-label">{{ _('In progress') }}</div>
         </div>
         <div class="stat-card completed">
             <div class="stat-value">{{ status_counts.completed }}</div>
-            <div class="stat-label">Выполнено</div>
+            <div class="stat-label">{{ _('Completed') }}</div>
         </div>
     </div>
 
     <div class="view-section" id="view-calendar" style="display: none;">
         <div class="view-toggle">
             <button class="view-btn" data-view="list" onclick="switchView('list')">
-                <i class="fas fa-list"></i> Списком
+                <i class="fas fa-list"></i> {{ _('List') }}
             </button>
             <button class="view-btn active" data-view="calendar" onclick="switchView('calendar')">
-                <i class="fas fa-calendar"></i> Календарь
+                <i class="fas fa-calendar"></i> {{ _('Calendar') }}
             </button>
         </div>
 
@@ -74,13 +79,13 @@
                 <button class="cal-nav" onclick="changeMonth(1)">→</button>
             </div>
             <div class="calendar-grid">
-                <div class="cal-day-header">Пн</div>
-                <div class="cal-day-header">Вт</div>
-                <div class="cal-day-header">Ср</div>
-                <div class="cal-day-header">Чт</div>
-                <div class="cal-day-header">Пт</div>
-                <div class="cal-day-header">Сб</div>
-                <div class="cal-day-header">Вс</div>
+                <div class="cal-day-header">{{ _('Mon') }}</div>
+                <div class="cal-day-header">{{ _('Tue') }}</div>
+                <div class="cal-day-header">{{ _('Wed') }}</div>
+                <div class="cal-day-header">{{ _('Thu') }}</div>
+                <div class="cal-day-header">{{ _('Fri') }}</div>
+                <div class="cal-day-header">{{ _('Sat') }}</div>
+                <div class="cal-day-header">{{ _('Sun') }}</div>
                 {% for day in calendar_days %}
                     <div class="cal-day {{ day.class }}">
                         <span class="day-number">{{ day.day }}</span>
@@ -103,18 +108,18 @@
     <div class="view-section" id="view-list">
         <div class="view-toggle">
             <button class="view-btn active" data-view="list" onclick="switchView('list')">
-                <i class="fas fa-list"></i> Списком
+                <i class="fas fa-list"></i> {{ _('List') }}
             </button>
             <button class="view-btn" data-view="calendar" onclick="switchView('calendar')">
-                <i class="fas fa-calendar"></i> Календарь
+                <i class="fas fa-calendar"></i> {{ _('Calendar') }}
             </button>
         </div>
 
         <div class="list-header">
             <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">Все</button>
-                <button class="filter-btn" data-filter="active">Активные</button>
-                <button class="filter-btn" data-filter="completed">Выполненные</button>
+                <button class="filter-btn active" data-filter="all">{{ _('All') }}</button>
+                <button class="filter-btn" data-filter="active">{{ _('Active') }}</button>
+                <button class="filter-btn" data-filter="completed">{{ _('Completed') }}</button>
             </div>
             <a href="{{ url_for('add_task') }}" class="add-btn">
                 <i class="fas fa-plus"></i>
@@ -131,9 +136,9 @@
                     {% endif %}
                     <div class="task-meta">
                         <span class="priority-badge {{ task.priority }}">
-                            {% if task.priority == 'high' %}🔴 Высокий
-                            {% elif task.priority == 'medium' %}🟡 Средний
-                            {% else %}🟢 Низкий
+                            {% if task.priority == 'high' %}🔴 {{ _('High') }}
+                            {% elif task.priority == 'medium' %}🟡 {{ _('Medium') }}
+                            {% else %}🟢 {{ _('Low') }}
                             {% endif %}
                         </span>
                         {% if task.due_date %}
@@ -163,7 +168,7 @@
                     <a href="{{ url_for('edit_task', task_id=task.id) }}" class="action-btn">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Удалить задачу?');">
+                    <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('{{ _('Delete task?') }}');">
                         <button type="submit" class="action-btn delete">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -174,8 +179,8 @@
         {% else %}
             <div class="empty-state">
                 <i class="fas fa-clipboard-list"></i>
-                <h3>Пока нет задач</h3>
-                <p>Создайте свою первую задачу!</p>
+                <h3>{{ _('No tasks yet') }}</h3>
+                <p>{{ _('Create your first task') }}</p>
             </div>
         {% endif %}
     </div>
@@ -184,23 +189,23 @@
         <div class="welcome-card">
             <i class="fas fa-rocket welcome-icon"></i>
             <h2>TON Planner</h2>
-            <p>Ваш персональный планировщик задач на блокчейне TON</p>
+            <p>{{ _('Your personal task planner on TON blockchain') }}</p>
             <div class="features">
                 <div class="feature">
                     <i class="fas fa-shield-alt"></i>
-                    <span>Безопасная авторизация через TON кошелек</span>
+                    <span>{{ _('Secure authorization via TON wallet') }}</span>
                 </div>
                 <div class="feature">
                     <i class="fas fa-tasks"></i>
-                    <span>Управление задачами с приоритетами</span>
+                    <span>{{ _('Task management with priorities') }}</span>
                 </div>
                 <div class="feature">
                     <i class="fas fa-chart-line"></i>
-                    <span>Отслеживание прогресса</span>
+                    <span>{{ _('Progress tracking') }}</span>
                 </div>
                 <div class="feature">
                     <i class="fas fa-user-lock"></i>
-                    <span>Персональное хранилище для каждого пользователя</span>
+                    <span>{{ _('Personal storage for each user') }}</span>
                 </div>
         </div>
     </div>

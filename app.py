@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify, send_from_directory
+from flask_babel import Babel
 import sqlite3
 import os
 import requests
@@ -18,6 +19,50 @@ pdfmetrics.registerFont(TTFont('DejaVuBold', 'C:/Windows/Fonts/DejaVuSans-Bold.t
 app = Flask(__name__)
 app.config['DATABASE'] = 'tasks.db'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
+app.config['BABEL_DEFAULT_LOCALE'] = 'ru'
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
+
+babel = Babel(app)
+
+LANGUAGES = {
+    'ru': 'Русский',
+    'en': 'English'
+}
+
+def get_locale():
+    if 'lang' in session:
+        return session['lang']
+    wallet = session.get('wallet')
+    if wallet:
+        db = get_db()
+        try:
+            cursor = db.execute('SELECT lang FROM users WHERE wallet_address = ?', (wallet,))
+            user = cursor.fetchone()
+            if user and user['lang']:
+                return user['lang']
+        finally:
+            close_db(db)
+    return 'ru'
+
+babel.init_app(app, locale_selector=get_locale)
+
+@app.route('/setlang/<lang>')
+def set_language(lang):
+    if lang in LANGUAGES:
+        session['lang'] = lang
+        wallet = session.get('wallet')
+        if wallet:
+            db = get_db()
+            try:
+                db.execute('UPDATE users SET lang = ? WHERE wallet_address = ?', (lang, wallet))
+                db.commit()
+            finally:
+                close_db(db)
+    return redirect(request.referrer or '/')
+
+@app.context_processor
+def inject_languages():
+    return dict(LANGUAGES=LANGUAGES)
 
 def get_db():
     db = sqlite3.connect(app.config['DATABASE'])
@@ -62,6 +107,12 @@ def init_db():
         
         if 'due_time' not in column_names:
             db.execute('ALTER TABLE tasks ADD COLUMN due_time TEXT')
+        
+        user_columns = db.execute("PRAGMA table_info(users)").fetchall()
+        user_column_names = [col[1] for col in user_columns]
+        
+        if 'lang' not in user_column_names:
+            db.execute('ALTER TABLE users ADD COLUMN lang TEXT DEFAULT "ru"')
             
     finally:
         close_db(db)
@@ -193,6 +244,14 @@ def login():
         if wallet and len(wallet) >= 32:
             create_or_get_user(wallet)
             session['wallet'] = wallet
+            db = get_db()
+            try:
+                cursor = db.execute('SELECT lang FROM users WHERE wallet_address = ?', (wallet,))
+                user = cursor.fetchone()
+                if user and user['lang']:
+                    session['lang'] = user['lang']
+            finally:
+                close_db(db)
             return redirect(url_for('index'))
         return redirect(url_for('login'))
     return render_template('login.html')
