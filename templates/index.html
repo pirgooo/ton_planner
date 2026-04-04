@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TON Planner</title>
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
@@ -55,17 +56,71 @@
             <div class="stat-label">Выполнено</div>
         </div>
     </div>
-    <div class="header">
-        <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">Все</button>
-            <button class="filter-btn" data-filter="active">Активные</button>
-            <button class="filter-btn" data-filter="completed">Выполненные</button>
+
+    <div class="view-section" id="view-calendar" style="display: none;">
+        <div class="view-toggle">
+            <button class="view-btn" data-view="list" onclick="switchView('list')">
+                <i class="fas fa-list"></i> Списком
+            </button>
+            <button class="view-btn active" data-view="calendar" onclick="switchView('calendar')">
+                <i class="fas fa-calendar"></i> Календарь
+            </button>
         </div>
-        <a href="{{ url_for('add_task') }}" class="add-btn">
-            <i class="fas fa-plus"></i>
-        </a>
+
+        <div class="calendar-section">
+            <div class="calendar-header">
+                <button class="cal-nav" onclick="changeMonth(-1)">←</button>
+                <span class="cal-month">{{ calendar_month }}</span>
+                <button class="cal-nav" onclick="changeMonth(1)">→</button>
+            </div>
+            <div class="calendar-grid">
+                <div class="cal-day-header">Пн</div>
+                <div class="cal-day-header">Вт</div>
+                <div class="cal-day-header">Ср</div>
+                <div class="cal-day-header">Чт</div>
+                <div class="cal-day-header">Пт</div>
+                <div class="cal-day-header">Сб</div>
+                <div class="cal-day-header">Вс</div>
+                {% for day in calendar_days %}
+                    <div class="cal-day {{ day.class }}">
+                        <span class="day-number">{{ day.day }}</span>
+                        {% if day.tasks %}
+                        <div class="day-tasks">
+                            {% for task in day.tasks[:2] %}
+                            <div class="day-task-dot {{ task.priority }}" title="{{ task.title }}"></div>
+                            {% endfor %}
+                            {% if day.tasks|length > 2 %}
+                            <span class="more-tasks">+{{ day.tasks|length - 2 }}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    <div class="tasks-list">
+
+    <div class="view-section" id="view-list">
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="list" onclick="switchView('list')">
+                <i class="fas fa-list"></i> Списком
+            </button>
+            <button class="view-btn" data-view="calendar" onclick="switchView('calendar')">
+                <i class="fas fa-calendar"></i> Календарь
+            </button>
+        </div>
+
+        <div class="list-header">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Все</button>
+                <button class="filter-btn" data-filter="active">Активные</button>
+                <button class="filter-btn" data-filter="completed">Выполненные</button>
+            </div>
+            <a href="{{ url_for('add_task') }}" class="add-btn">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+        <div class="tasks-list">
         {% if tasks %}
             {% for task in tasks %}
             <div class="task-card {{ task.status }}" data-status="{{ task.status }}">
@@ -81,15 +136,12 @@
                             {% else %}🟢 Низкий
                             {% endif %}
                         </span>
-                        <span class="status-badge {{ task.status }}">
-                            {% if task.status == 'pending' %}⏳ 
-                            {% elif task.status == 'in_progress' %}⚙️ В процессе
-                            {% else %}✅ 
-                            {% endif %}
-                        </span>
                         {% if task.due_date %}
                         <span class="due-date">
                             <i class="fas fa-calendar"></i> {{ task.due_date }}
+                            {% if task.due_time %}
+                             {{ task.due_time }}
+                            {% endif %}
                         </span>
                         {% endif %}
                     </div>
@@ -174,6 +226,33 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         });
     });
 });
+
+function switchView(view) {
+    const url = new URL(window.location);
+    url.searchParams.set('view', view);
+    history.pushState({}, '', url);
+    
+    document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('view-' + view).style.display = 'block';
+    document.querySelectorAll('.view-btn[data-view="' + view + '"]').forEach(b => b.classList.add('active'));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const url = new URL(window.location);
+    const view = url.searchParams.get('view') || 'list';
+    if (view !== 'list') {
+        switchView(view);
+    }
+});
+
+function changeMonth(delta) {
+    const url = new URL(window.location);
+    const current = parseInt(url.searchParams.get('month') || '0');
+    url.searchParams.set('month', current + delta);
+    url.searchParams.set('view', 'calendar');
+    window.location.href = url;
+}
 </script>
 
 </body>

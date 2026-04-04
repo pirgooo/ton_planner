@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, make_response
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify, send_from_directory
 import sqlite3
 import os
 import requests
@@ -48,6 +48,7 @@ def init_db():
                 priority TEXT DEFAULT 'medium',
                 status TEXT DEFAULT 'pending',
                 due_date TEXT,
+                due_time TEXT,
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id)
             )
@@ -58,6 +59,9 @@ def init_db():
         
         if 'user_id' not in column_names:
             db.execute('ALTER TABLE tasks ADD COLUMN user_id INTEGER DEFAULT 1')
+        
+        if 'due_time' not in column_names:
+            db.execute('ALTER TABLE tasks ADD COLUMN due_time TEXT')
             
     finally:
         close_db(db)
@@ -106,14 +110,40 @@ def create_or_get_user(wallet_address):
 
 @app.route('/')
 def index():
+    import datetime
     current_user = get_current_user()
     tasks = []
     status_counts = {'pending': 0, 'in_progress': 0, 'completed': 0}
+    calendar_days = []
     
+    month_offset = request.args.get('month', 0, type=int)
+    today = datetime.date.today()
+    first_day = today.replace(day=1)
+    if month_offset:
+        from datetime import timedelta
+        import calendar
+        new_month = first_day.month + month_offset
+        new_year = first_day.year + (new_month - 1) // 12
+        new_month = ((new_month - 1) % 12) + 1
+        last_day_of_month = calendar.monthrange(new_year, new_month)[1]
+        first_day = first_day.replace(year=new_year, month=new_month, day=1)
+    
+    month_name = first_day.strftime('%B %Y')
+    
+    start_weekday = first_day.weekday()
+    days_in_month = (first_day.replace(month=first_day.month % 12 + 1, year=first_day.year if first_day.month < 12 else first_day.year + 1) - datetime.timedelta(days=1)).day
+    
+    prev_month = (first_day - datetime.timedelta(days=1)).replace(day=1)
+    prev_days = []
+    for i in range(start_weekday):
+        day_num = (prev_month - datetime.timedelta(days=start_weekday - i - 1)).day
+        prev_days.append({'day': day_num, 'class': 'other-month', 'tasks': []})
+    
+    tasks_by_date = {}
     if current_user:
         db = get_db()
         try:
-            cursor = db.execute('''SELECT * FROM tasks WHERE user_id = ? ORDER BY 
+            cursor = db.execute('''SELECT * FROM tasks WHERE user_id = ? AND due_date IS NOT NULL AND due_date != '' ORDER BY 
                 CASE status 
                     WHEN 'pending' THEN 1 
                     WHEN 'in_progress' THEN 2 
@@ -131,13 +161,30 @@ def index():
                 status = task['status']
                 if status in status_counts:
                     status_counts[status] += 1
+                if task['due_date']:
+                    if task['due_date'] not in tasks_by_date:
+                        tasks_by_date[task['due_date']] = []
+                    tasks_by_date[task['due_date']].append(task)
         finally:
             close_db(db)
+    
+    calendar_days = prev_days
+    for day in range(1, days_in_month + 1):
+        date_str = first_day.replace(day=day).strftime('%Y-%m-%d')
+        day_tasks = tasks_by_date.get(date_str, [])
+        is_today = (first_day.replace(day=day) == today)
+        calendar_days.append({
+            'day': day,
+            'class': 'today' if is_today else ('has-tasks' if day_tasks else ''),
+            'tasks': day_tasks
+        })
     
     return render_template('index.html', 
                            tasks=tasks,
                            status_counts=status_counts,
-                           current_user=current_user)
+                           current_user=current_user,
+                           calendar_days=calendar_days,
+                           calendar_month=month_name)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -166,6 +213,7 @@ def add_task():
         description = request.form.get('description', '').strip()
         priority = request.form.get('priority', 'medium')
         due_date = request.form.get('due_date', '')
+        due_time = request.form.get('due_time', '')
         
         if not title:
             return redirect(url_for('add_task'))
@@ -173,8 +221,8 @@ def add_task():
         db = get_db()
         try:
             db.execute(
-                'INSERT INTO tasks (user_id, title, description, priority, due_date) VALUES (?, ?, ?, ?, ?)',
-                (current_user['id'], title, description, priority, due_date)
+                'INSERT INTO tasks (user_id, title, description, priority, due_date, due_time) VALUES (?, ?, ?, ?, ?, ?)',
+                (current_user['id'], title, description, priority, due_date, due_time)
             )
             db.commit()
         finally:
@@ -198,12 +246,13 @@ def edit_task(task_id):
             priority = request.form.get('priority', 'medium')
             status = request.form.get('status', 'pending')
             due_date = request.form.get('due_date', '')
+            due_time = request.form.get('due_time', '')
             
             db.execute('''
                 UPDATE tasks 
-                SET title = ?, description = ?, priority = ?, status = ?, due_date = ?
+                SET title = ?, description = ?, priority = ?, status = ?, due_date = ?, due_time = ?
                 WHERE id = ? AND user_id = ?
-            ''', (title, description, priority, status, due_date, task_id, current_user['id']))
+            ''', (title, description, priority, status, due_date, due_time, task_id, current_user['id']))
             db.commit()
             close_db(db)
             return redirect(url_for('index'))
@@ -319,16 +368,20 @@ def export_pdf():
     elements.append(Spacer(1, 8*mm))
     
     if tasks:
-        table_data = [[Paragraph(h, header_style) for h in ['#', 'Задача', 'Приоритет', 'Статус', 'Дедлайн']]]
+        table_data = [[Paragraph(h, header_style) for h in ['#', 'Задача', 'Приоритет', 'Статус', 'Срок']]]
         for i, task in enumerate(tasks, 1):
             priority = {'high': 'Высокий', 'medium': 'Средний', 'low': 'Низкий'}.get(task['priority'], '')
             status = {'pending': 'Ожидает', 'in_progress': 'В процессе', 'completed': 'Выполнено'}.get(task['status'], '')
-            due_date = task['due_date'] if task['due_date'] else '-'
+            due = task['due_date'] if task['due_date'] else '-'
+            if task['due_time'] and task['due_date']:
+                due = f"{task['due_date']} {task['due_time']}"
+            elif task['due_time']:
+                due = task['due_time']
             title = task['title'][:40] + '...' if len(task['title']) > 40 else task['title']
             cell_style = ParagraphStyle('Cell', fontName='DejaVu', fontSize=8, leading=10)
-            table_data.append([str(i), Paragraph(title, cell_style), Paragraph(priority, cell_style), Paragraph(status, cell_style), Paragraph(due_date, cell_style)])
+            table_data.append([str(i), Paragraph(title, cell_style), Paragraph(priority, cell_style), Paragraph(status, cell_style), Paragraph(due, cell_style)])
         
-        table = Table(table_data, colWidths=[12*mm, 75*mm, 26*mm, 26*mm, 25*mm])
+        table = Table(table_data, colWidths=[12*mm, 70*mm, 26*mm, 26*mm, 30*mm])
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#667eea')),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),

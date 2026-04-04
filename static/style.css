@@ -627,6 +627,13 @@ body {
     color: #667eea;
 }
 
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 20px;
@@ -653,4 +660,155 @@ body {
     .task-actions {
         justify-content: flex-start;
     }
+}
+
+.calendar-section {
+    margin-top: 30px;
+}
+
+.calendar-title {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.cal-nav {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.cal-nav:hover {
+    background: #eef2ff;
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.cal-month {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.cal-day-header {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    padding: 8px 0;
+    font-weight: 500;
+}
+
+.cal-day {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px;
+    min-height: 70px;
+    position: relative;
+}
+
+.cal-day.other-month {
+    background: #f0f0f0;
+    opacity: 0.5;
+}
+
+.cal-day.today {
+    background: #eef2ff;
+    border-color: #667eea;
+}
+
+.cal-day.has-tasks {
+    background: #fff;
+}
+
+.day-number {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.day-tasks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+}
+
+.day-task-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.day-task-dot.high {
+    background: #ef4444;
+}
+
+.day-task-dot.medium {
+    background: #f59e0b;
+}
+
+.day-task-dot.low {
+    background: #22c55e;
+}
+
+.more-tasks {
+    font-size: 0.7rem;
+    color: #9ca3af;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.view-btn {
+    flex: 1;
+    padding: 10px 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.view-btn:hover {
+    background: #eef2ff;
+    border-color: #667eea;
+}
+
+.view-btn.active {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+.view-btn i {
+    font-size: 14px;
 }

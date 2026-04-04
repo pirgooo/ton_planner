@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About us</title>
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
@@ -36,6 +37,19 @@
             {% else %}
                 <a href="{{ url_for('login') }}" class="menu__link-outline">Login</a>
             {% endif %}
+        </div>
+    </div>
+
+    <div class="about-content">
+        <div class="about-section">
+            <h3><i class="fas fa-tasks"></i> Функции</h3>
+            <ul class="features-list">
+                <li>Создание задач с названием, описанием и приоритетом</li>
+                <li>Отслеживание статуса: ожидает, в процессе, выполнено</li>
+                <li>Установка срока выполнения</li>
+                <li>Фильтрация по статусу задач</li>
+                <li>Экспорт задач в PDF</li>
+            </ul>
         </div>
     </div>
 
@@ -91,6 +105,96 @@
 
 .menu__link-outline:hover {
     background: #f0f0f0;
+}
+
+.about-content {
+    margin-top: 10px;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.about-header h2 {
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.about-header p {
+    color: #667eea;
+    font-size: 1.1rem;
+}
+
+.about-section {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.about-section h3 {
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.about-section h3 i {
+    color: #667eea;
+}
+
+.about-section p {
+    color: #6b7280;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features-list li {
+    color: #6b7280;
+    font-size: 0.95rem;
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+}
+
+.features-list li::before {
+    content: "✓";
+    color: #667eea;
+    position: absolute;
+    left: 0;
+}
+
+.about-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.about-footer p {
+    color: #9ca3af;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.about-footer a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.about-footer a:hover {
+    text-decoration: underline;
 }
 </style>
 
