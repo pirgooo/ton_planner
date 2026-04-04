@@ -1,2 +1,0 @@
-# ton_planner
-## MVP

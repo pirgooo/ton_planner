@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage - TON Planner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>TON Planner</h1>
+        <nav class="nav">
+                <ul class="menu">
+                    <li class="menu__item"><a href="{{ url_for('index') }}" class="menu__link">Tasks</a></li>
+                    <li class="menu__item"><a href="#" class="menu__link">Storage</a></li>
+                    <li class="menu__item"><a href="{{ url_for('manage') }}" class="menu__link menu__link--active">Manage</a></li>
+                    <li class="menu__item"><a href="{{ url_for('about') }}" class="menu__link">About</a></li>
+                </ul>
+            </nav>
+        <div class="auth-section">
+            <span class="wallet-badge">
+                <i class="fas fa-wallet"></i> {{ current_user.wallet_address[:8] }}...{{ current_user.wallet_address[-4:] }}
+                {% if current_user.balance is not none %}
+                    | {{ "%.2f"|format(current_user.balance) }} TON
+                {% endif %}
+            </span>
+            <a href="{{ url_for('logout') }}" class="ton-btn disconnect">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="user-info-section">
+        <h2>Данные аккаунта</h2>
+        <div class="user-card">
+            <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-details">
+                <div class="user-field">
+                    <span class="field-label">Кошелек:</span>
+                    <span class="field-value">{{ current_user.wallet_address }}</span>
+                </div>
+                <div class="user-field">
+                    <span class="field-label">Дата регистрации:</span>
+                    <span class="field-value">{{ current_user.created_at }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions-section">
+        <h2>Действия</h2>
+        <div class="action-card">
+            <div class="action-info">
+                <i class="fas fa-file-pdf"></i>
+                <div>
+                    <h3>Экспорт в PDF</h3>
+                    <p>Сохраните список задач в PDF файл</p>
+                </div>
+            </div>
+            <a href="{{ url_for('export_pdf') }}" class="action-btn-export">
+                <i class="fas fa-download"></i> Скачать PDF
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<style>
+.user-info-section {
+    margin-top: 20px;
+}
+
+.user-info-section h2 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+}
+
+.user-card {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.user-avatar {
+    font-size: 48px;
+    color: #728a96;
+}
+
+.user-details {
+    flex: 1;
+}
+
+.user-field {
+    margin-bottom: 12px;
+}
+
+.user-field:last-child {
+    margin-bottom: 0;
+}
+
+.field-label {
+    color: #728a96;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.field-value {
+    color: #04060b;
+    font-size: 0.95rem;
+    font-weight: 500;
+    word-break: break-all;
+}
+
+.actions-section {
+    margin-top: 30px;
+}
+
+.actions-section h2 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+}
+
+.action-card {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.action-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.action-info i {
+    font-size: 32px;
+    color: #667eea;
+}
+
+.action-info h3 {
+    color: #04060b;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.action-info p {
+    color: #728a96;
+    font-size: 0.85rem;
+}
+
+.action-btn-export {
+    padding: 10px 20px;
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-btn-export:hover {
+    background: #5a6fd6;
+}
+</style>
+
+</body>
+</html>

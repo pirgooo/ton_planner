@@ -1,0 +1,7 @@
+{
+    "url": "http://localhost:5000",
+    "name": "TON Task Planner",
+    "iconUrl": "http://localhost:5000/static/icon.png",
+    "termsOfUseUrl": "http://localhost:5000/about",
+    "privacyPolicyUrl": "http://localhost:5000/about"
+}
